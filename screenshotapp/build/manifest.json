@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Screenshotapp",
+  "version": "0.1.0",
+  "description": "My Chrome Extension",
+  "icons": {
+    "16": "icons/icon_16.png",
+    "32": "icons/icon_32.png",
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Screenshotapp",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "storage", "tabs","downloads"],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+		{
+			"resources": ["scripts/*", "ocr_ds/*"],
+      "matches": ["<all_urls>"],
+			"use_dynamic_url": true
+		}
+	],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_idle",
+      "js": [
+       "contentScript.js", "scripts/tessaract/tesseract.min.js", "scripts/html2canvas/html2canvas.js"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
